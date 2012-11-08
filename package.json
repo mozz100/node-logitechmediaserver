@@ -1,0 +1,24 @@
+{
+  "name": "logitechmediaserver",
+  "version": "0.0.0",
+  "description": "Listen to and control Logitech Media Server (previously Squeezebox Server).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mozz100/node-logitechmediaserver.git"
+  },
+  "keywords": [
+    "logitech",
+    "music",
+    "squeezebox",
+    "radio",
+    "home",
+    "automation"
+  ],
+  "author": "Richard Morrison <richard@rmorrison.net>",
+  "license": "CC-by-SA",
+  "readmeFilename": "README.md"
+}
