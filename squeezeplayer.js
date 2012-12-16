@@ -14,7 +14,7 @@ function SqueezePlayer(telnet) {
     self.runTelnetCmd("mixer volume ?");
     self.runTelnetCmd("signalstrength ?");
     self.runTelnetCmd("power ?");    
-  }, 3 * 1000);
+  }, 30 * 1000);
 }
 util.inherits(SqueezePlayer, EventEmitter);
 
