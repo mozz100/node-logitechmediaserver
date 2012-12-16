@@ -1,7 +1,7 @@
 var LogitechMediaServer = require('./index');
-var lms = new LogitechMediaServer('192.168.0.15');
+var lms = new LogitechMediaServer('192.168.0.106');
 var player;
-var mac_address = '00:04:20:27:5f:75';
+var mac_address = '00:04:20:27:5f:75';   // kitchen
 
 // Simple keypress detection
 var readline = require('readline');

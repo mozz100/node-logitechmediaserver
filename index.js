@@ -173,7 +173,7 @@ LogitechMediaServer.prototype.handleLine = function(buffer) {
         self.telnet.writeln(pid + " signalstrength ?");
         self.telnet.writeln(pid + " name ?");
         self.telnet.writeln(pid + " power ?");
-        // todo volume level
+        self.telnet.writeln(pid + " mixer volume ?");
     })) { handled = true } ;
 
     // Just handle the "listen" response (LMS should just respond with 'listen 1' at the beginning)
@@ -182,44 +182,44 @@ LogitechMediaServer.prototype.handleLine = function(buffer) {
     // ~~~~~~~~~~~~~~ keywords below here are those which are associated with an individual player ~~~~~~~~~~~~~~~~~~
 
     if (self.handle_with_id(buffer, "signalstrength", function(player, params, b) {
-        player.signalstrength = parseInt(params);
+        player.setProperty("signalstrength", parseInt(params));
     })) { handled = true } ;
 
     if (self.handle_with_id(buffer, "power", function(player, params, b) {
-        player.power = parseInt(params);
+        player.setProperty("power", parseInt(params));
 
         if (player.power == 1) {
             // Wait a tiny bit while player is powering up and then ask what state the player is in
             setTimeout(function() { player.runTelnetCmd("mode ?") }, 1500);
         } else {
-            player.mode = "off";
+            player.setProperty("mode", "off");
         }
     })) { handled = true } ;
 
     if (self.handle_with_id(buffer, "name", function(player, params, b) {
-        player.name = params;
+        player.setProperty("name", params);
     })) { handled = true };
 
     if (self.handle_with_id(buffer, "current_title", function(player, params, b) {
-        player.current_title = params;
+        player.setProperty("current_title", params);
     })) { handled = true };
 
     if (self.handle_with_id(buffer, "mode", function(player, params, b) {
-        player.mode = params;  // "play", "stop" or "pause"
+        player.setProperty("mode", params);  // "play", "stop" or "pause"
     })) { handled = true };
 
     if (self.handle_with_id(buffer, "play", function(player, params, b) {
-        player.mode = "play";
+        player.setProperty("mode", "play");
         // player has started playing something.  Let's find out what!
         player.runTelnetCmd("current_title ?");
     })) { handled = true };
 
     if (self.handle_with_id(buffer, "stop", function(player, params, b) {
-        player.mode = "stop";
+        player.setProperty("mode", "stop");
     })) { handled = true };
 
     if (self.handle_with_id(buffer, "pause", function(player, params, b) {
-        player.mode = "pause";
+        player.setProperty("mode", "pause");
     })) { handled = true };
 
     if (!handled) {
