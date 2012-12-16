@@ -34,6 +34,7 @@ SqueezePlayer.prototype.handleServerData = function(strEvent, raw_buffer) {
         else {
             self.volume = parseInt(v);
         }
+        this.emit("volume", v);
     } else {
         this.emit("logitech_event", strEvent);
     }

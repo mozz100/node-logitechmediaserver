@@ -1,6 +1,6 @@
 {
   "name": "logitechmediaserver",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Listen to and control Logitech Media Server (previously Squeezebox Server).",
   "main": "index.js",
   "scripts": {
