@@ -1,3 +1,16 @@
+Just some code I wrote for my home automation system. Connects javascript to a Logitech Media Server (formerly Squeezebox Server).  It provides a "telnet server" which I just connect to using `net.createConnection`.
+
+See example.js for how to use.
+
+Collects information about known players and then allows:
+* monitoring of volume, wifi signal strength, power status (on/off)
+* switch on/off by calling simple functions
+* play/pause/stop
+* sending arbitrary commands through the telnet interface
+
+I used this together with my [xBee](/mozz100/node-xbee) [home automation system](http://www.rmorrison.net/homenode) to play sounds when my back door opened, and so on.
+
+
 Licence
 -------
 
