@@ -13,20 +13,22 @@ net.Stream.prototype.writeln = function(s) {
 
 // The LogitechMediaServer object is an event emitter with a few properties.
 // After creating it, call .start() and wait for the "registration_finished" event.
-function LogitechMediaServer(address) {
+// The port number is optional, if not provided, the default value of 9090 is used.
+function LogitechMediaServer(address, port) {
   var self = this;
   self.address = address;
+  self.port = port || 9090;
 }
 util.inherits(LogitechMediaServer, EventEmitter);
 
 
 // Start listening to the telnet server provided by Logitech Media Server.
-// I haven't implemented log in with username/password yet - should be easy to do.
-LogitechMediaServer.prototype.start = function() {
+// Username/password are optional, if both are provided we will log in using those credentials.
+LogitechMediaServer.prototype.start = function(username, password) {
     var self = this;
     
-    // Listen on port 9090 to self.address
-    self.telnet = net.createConnection(9090, self.address);
+    // Listen on self.port to self.address
+    self.telnet = net.createConnection(self.port, self.address);
     self.line_parser = new LineParser(self.telnet);
 
     // The LineParser just emits a "line" event for each line of data
@@ -36,11 +38,17 @@ LogitechMediaServer.prototype.start = function() {
         // console.log("< " + data.toString().replace(/\n/g,"\\n"));
         self.handleLine(data);
     });
-
-    // Start things off by asking how many players are connected.
-    // See .handle() - the response to 'player count ?' is how the code
-    // discovers info about all the known players.
-    self.telnet.writeln("player count ?");
+    
+    if (username && password) {
+        // Start things off by logging in.
+        self.telnet.writeln("login " + username + " " + password);
+    }
+    else {
+        // Start things off by asking how many players are connected.
+        // See .handle() - the response to 'player count ?' is how the code
+        // discovers info about all the known players.
+        self.telnet.writeln("player count ?");
+    }
 }
 
 LogitechMediaServer.prototype.handle = function(buffer, keyword, callback) {
@@ -149,7 +157,13 @@ LogitechMediaServer.prototype.handleLine = function(buffer) {
     // Guts of this function is pretty much a list of commands and callbacks.
     // Could definitely be made more efficient, or a bit DRYer, but it's just a bunch of string comparisons.
     
-    // "player count" response is what kicks things off in the first place (see .start())
+    // "login username ********" response is what kicks things off if we are using password protection (see .start())
+    if (self.handle(buffer, "login", function (params, buffer) {
+        // Start things off by asking how many players are connected.
+        self.telnet.writeln("player count ?");
+    })) { handled = true } ;
+    
+    // "player count" response is what kicks things off in the first place (see .start() or above)
     if (self.handle(buffer, "player count", function(params, buffer) {
         // reset in-memory knowledge of players
         self.numPlayers = parseInt(params[0]);
