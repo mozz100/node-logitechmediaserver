@@ -18,7 +18,8 @@
     "home",
     "automation"
   ],
-  "author": "Richard Morrison <richard@rmorrison.net>",
+  "author": {"name": "Richard Morrison", "email": "richard@rmorrison.net"},
+  "contributors": [{"name": "Samuel Weibel"}],
   "license": "CC-by-SA",
   "readmeFilename": "README.md"
 }
