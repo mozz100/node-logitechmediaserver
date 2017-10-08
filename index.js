@@ -166,7 +166,7 @@ LogitechMediaServer.prototype.handleLine = function(buffer) {
     // "player count" response is what kicks things off in the first place (see .start() or above)
     if (self.handle(buffer, "player count", function(params, buffer) {
         // reset in-memory knowledge of players
-        self.numPlayers = parseInt(params[0]);
+        self.numPlayers = parseInt(params);
         self.players = {};
 
         // Now issue a "player id" request for each player
